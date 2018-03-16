@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import tyrantgit.explosionfield.ExplosionField;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, TimeKeeper.TimerCallback {
 
     public static final int TIME_LIMIT = 30;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView firstCard;
     private CardView secondCard;
 
+    private ExplosionField mExplosionField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         shuffle(currentLevelData);
         int position = 0;
         TimeKeeper.setTimeLimit(TIME_LIMIT);
+
+        mExplosionField= ExplosionField.attach2Window(this);
 
         CardView.LayoutParams imageParam = new FrameLayout.LayoutParams(100, 100, Gravity.CENTER);
         GridLayout.LayoutParams cardParam = new GridLayout.LayoutParams(GridLayout.spec(0, 0.0F), GridLayout.spec(0, 0.0F));
@@ -159,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         soundPlayer.makeSoundGameCompleted();
                     }else{
                         soundPlayer.makeSoundSuccess();
+                          mExplosionField.explode(firstCard);
+                          mExplosionField.explode(secondCard);
                     }
                 }else{
                     soundPlayer.makeSoundFail();
